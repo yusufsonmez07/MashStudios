@@ -219,10 +219,10 @@
                 document.getElementById('keyInput').value = '';
                 
                 // 1. Ekranı yumuşakça projeler kısmına kaydır
-const projectsSection = document.getElementById('projectsSection');
-const ofsetDegeri = -120; // Bu sayıyı değiştirerek duracağı yeri ayarlayabilirsin
-const y = projectsSection.getBoundingClientRect().top + window.scrollY + ofsetDegeri;
-window.scrollTo({ top: y, behavior: 'smooth' });
+                const projectsSection = document.getElementById('projectsSection');
+                const ofsetDegeri = -120;
+                const y = projectsSection.getBoundingClientRect().top + window.scrollY + ofsetDegeri;
+                window.scrollTo({ top: y, behavior: 'smooth' });
                 
                 // 2. Kayma işlemi sürerken (600ms sonra) kartı görünür yap ve parlat
                 setTimeout(() => {
@@ -260,37 +260,19 @@ window.scrollTo({ top: y, behavior: 'smooth' });
             }
         });
 
-        // 5. Otomatik indirme başlatıp kapanan beyaz sayfa fonksiyonu
+        // 5. İndirme Fonksiyonu (Pop-up engeline takılmayan, arka planda indiren kesin çözüm)
         function downloadKutuphaneOS() {
-            // Boş beyaz bir pencere açar
-            const whiteWindow = window.open('', '_blank', 'width=600,height=400');
-            whiteWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head><title>İndirme Başlatılıyor</title></head>
-                <body style="background-color: white; margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif;">
-                    <h1 style="color: #333;">İndirme başlatılıyor...</h1>
-                    <p style="color: #666;">Lütfen bekleyin, bu pencere otomatik olarak kapanacaktır.</p>
-                    
-                    <script>
-                        setTimeout(() => {
-                            // Dosya indirme tetikleniyor
-                            const link = document.createElement('a');
-                            // NOT: Buraya zip dosyasının gerçek adını veya linkini koymalısın
-                            link.href = 'https://drive.google.com/uc?export=download&id=1sVaUsnp3clMpPdaENpmRBzHq91iK2ao8'; 
-                            link.download = 'Naciye Kütüphane.zip';
-                            document.body.appendChild(link);
-                            link.click();
-                            
-                            // İndirme tetiklendikten hemen sonra sekmeyi kapat
-                            setTimeout(() => {
-                                window.close();
-                            }, 500);
-                        }, 800);
-                    <\/script>
-                </body>
-                </html>
-            `);
+            // Beyaz sayfa açmadan, doğrudan arka planda bir iframe oluşturup indirmeyi başlatır
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none'; // Görünmez yap
+            // Senin Google Drive İndirme Linkin
+            iframe.src = 'https://drive.google.com/uc?export=download&id=1sVaUsnp3clMpPdaENpmRBzHq91iK2ao8';
+            document.body.appendChild(iframe);
+            
+            // Temizlik: İframe'i bir süre sonra bellekten sil
+            setTimeout(() => {
+                document.body.removeChild(iframe);
+            }, 5000);
         }
     </script>
 </body>
