@@ -260,19 +260,10 @@
             }
         });
 
-        // 5. İndirme Fonksiyonu (Pop-up engeline takılmayan, arka planda indiren kesin çözüm)
+        // 5. İndirme Fonksiyonu (Büyük dosyalar için uyarlanmış hali)
         function downloadKutuphaneOS() {
-            // Beyaz sayfa açmadan, doğrudan arka planda bir iframe oluşturup indirmeyi başlatır
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none'; // Görünmez yap
-            // Senin Google Drive İndirme Linkin
-            iframe.src = 'https://drive.google.com/uc?export=download&id=1sVaUsnp3clMpPdaENpmRBzHq91iK2ao8';
-            document.body.appendChild(iframe);
-            
-            // Temizlik: İframe'i bir süre sonra bellekten sil
-            setTimeout(() => {
-                document.body.removeChild(iframe);
-            }, 5000);
+            // 75 MB'lık dosya virüs uyarısı sayfasına takılacağı için yeni sekmede açıyoruz
+            window.open('https://drive.google.com/uc?export=download&id=1sVaUsnp3clMpPdaENpmRBzHq91iK2ao8', '_blank');
         }
     </script>
 </body>
