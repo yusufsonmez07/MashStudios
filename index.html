@@ -30,7 +30,7 @@
             50% {
                 opacity: 1;
                 transform: translateY(-5px) scale(1.02);
-                box-shadow: 0 0 40px rgba(239, 68, 68, 0.8); /* Kırmızı parlama */
+                box-shadow: 0 0 40px rgba(239, 68, 68, 0.8);
             }
             100% { 
                 opacity: 1; 
@@ -68,18 +68,18 @@
         
         <section class="mt-10">
             <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">
-                Hoş Geldiniz, <span class="text-red-500">Mash Studios</span>.
+                Hoş Geldiniz <span class="text-red-500"></span>.
             </h1>
             <p class="text-lg text-gray-400 max-w-2xl">
                 Özel yazılım projeleri, deneysel altyapılar ve kapalı beta sistemler.
             </p>
         </section>
 
-        <!-- Projeler Alanı (ID eklendi) -->
+        <!-- Projeler Alanı -->
         <section id="projectsSection">
             <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
                 <span class="w-8 h-[2px] bg-red-500"></span>
-                PROJELER
+                 AKTİF PROJELER
             </h2>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="projectsGrid">
@@ -146,15 +146,26 @@
                             <span class="text-[11px] text-red-400 font-bold tracking-wide">KAPALI BETA (Sadece Anahtar kod ile edinebilirsiniz)</span>
                         </div>
                         
-                        <!-- Kırıldıktan Sonra Ortaya Çıkacak Yeşil Alan ve İndir Butonu -->
-                        <div id="secretUnlockedArea" class="absolute bottom-0 left-0 w-full flex items-center justify-between opacity-0 scale-90 pointer-events-none transition-all duration-500 z-20">
-                            <div class="bg-green-500/10 border border-green-500/30 rounded-md p-2 flex items-center gap-2 flex-grow mr-3">
+                        <!-- Kırıldıktan Sonra Ortaya Çıkacak İkili Buton Alanı -->
+                        <div id="secretUnlockedArea" class="absolute bottom-0 left-0 w-full flex items-center justify-between opacity-0 scale-90 pointer-events-none transition-all duration-500 z-20 gap-2">
+                            
+                            <!-- İndirmeye Hazır Etiketi (Mobil'de yer kaplamaması için gizlenir) -->
+                            <div class="bg-green-500/10 border border-green-500/30 rounded-md p-2 hidden sm:flex items-center gap-1 flex-grow">
                                 <i data-lucide="unlock" class="w-4 h-4 text-green-500 flex-shrink-0"></i>
-                                <span class="text-[11px] text-green-400 font-bold tracking-wide">İNDİRMEYE HAZIR</span>
+                                <span class="text-[10px] text-green-400 font-bold tracking-wide">HAZIR</span>
                             </div>
-                            <button onclick="downloadKutuphaneOS()" class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold py-2 px-4 rounded-md transition-colors flex items-center gap-2 shadow-[0_0_10px_rgba(37,99,235,0.4)] hover:shadow-[0_0_15px_rgba(37,99,235,0.6)]">
-                                <i data-lucide="download" class="w-4 h-4"></i> İndir
-                            </button>
+
+                            <!-- Butonlar Grubu -->
+                            <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                                <!-- Kullanım Kılavuzu Butonu -->
+                                <button onclick="downloadManual()" class="bg-gray-700 hover:bg-gray-600 text-white text-sm font-bold py-2 px-3 rounded-md transition-colors flex items-center gap-2 shadow-[0_0_10px_rgba(75,85,99,0.3)]">
+                                    <i data-lucide="file-text" class="w-4 h-4"></i> Kılavuz
+                                </button>
+                                <!-- İndir Butonu -->
+                                <button onclick="downloadKutuphaneOS()" class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold py-2 px-5 rounded-md transition-colors flex items-center gap-2 shadow-[0_0_10px_rgba(37,99,235,0.4)] hover:shadow-[0_0_15px_rgba(37,99,235,0.6)]">
+                                    <i data-lucide="download" class="w-4 h-4"></i> İndir
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -205,7 +216,7 @@
 
     </main>
 
-    <!-- JavaScript - Tüm Mantık Burada -->
+    <!-- JavaScript -->
     <script>
         lucide.createIcons();
 
@@ -218,33 +229,30 @@
                 errorMsg.classList.add('hidden');
                 document.getElementById('keyInput').value = '';
                 
-                // 1. Ekranı yumuşakça projeler kısmına kaydır
+                // 1. Ekranı kaydır
                 const projectsSection = document.getElementById('projectsSection');
                 const ofsetDegeri = -120;
                 const y = projectsSection.getBoundingClientRect().top + window.scrollY + ofsetDegeri;
                 window.scrollTo({ top: y, behavior: 'smooth' });
                 
-                // 2. Kayma işlemi sürerken (600ms sonra) kartı görünür yap ve parlat
+                // 2. Kartı göster
                 setTimeout(() => {
                     const secretCard = document.getElementById('secretCard');
                     secretCard.classList.remove('hidden');
                     secretCard.classList.add('flex', 'animate-reveal');
                     
-                    // 3. Parlama bittikten (1.5 saniye) sonra kırmızı etiketi kır
+                    // 3. Etiketi kır
                     setTimeout(() => {
                         document.getElementById('secretRedBadge').classList.add('animate-shatter');
                         
-                        // 4. Etiket kırılırken (400ms) yeni butonları göster ve renkleri mavi/yeşil yap
+                        // 4. Yeni alanı göster
                         setTimeout(() => {
-                            // Kart teması değişimi (Kırmızıdan Maviye)
                             secretCard.classList.remove('border-red-500/10');
                             secretCard.classList.add('border-blue-500/40', 'shadow-[0_0_20px_rgba(59,130,246,0.15)]');
-                            
                             document.getElementById('secretTopGlow').classList.replace('via-red-500', 'via-blue-500');
                             document.getElementById('secretIconBox').classList.replace('border-red-500/20', 'border-blue-500/30');
                             document.getElementById('secretIcon').classList.replace('text-red-500', 'text-blue-500');
                             
-                            // İndirme alanı ve Yeşil yazıyı göster
                             const unlockedArea = document.getElementById('secretUnlockedArea');
                             unlockedArea.classList.remove('opacity-0', 'scale-90', 'pointer-events-none');
                             unlockedArea.classList.add('opacity-100', 'scale-100');
@@ -254,16 +262,102 @@
                 }, 600); 
 
             } else if (input.trim() !== '') {
-                // Yanlış şifre girilirse
                 errorMsg.classList.remove('hidden');
                 setTimeout(() => { errorMsg.classList.add('hidden'); }, 3000);
             }
         });
 
-        // 5. İndirme Fonksiyonu (Büyük dosyalar için uyarlanmış hali)
+        // 5. İndirme Fonksiyonu (OS)
         function downloadKutuphaneOS() {
-            // 75 MB'lık dosya virüs uyarısı sayfasına takılacağı için yeni sekmede açıyoruz
             window.open('https://drive.google.com/uc?export=download&id=1wRDx8cTImq80dQ_b4QYZaKn-EwiowuOe', '_blank');
+        }
+
+        // 6. Kullanım Kılavuzu İndirme Fonksiyonu (Dinamik TXT oluşturucu)
+        function downloadManual() {
+            const metinIcerigi = `
+
+            Kütüphane OS v1.0 - Kullanım Kılavuzu
+
+--- KURULUM VE GÜVENLİK UYARISI HAKKINDA ---
+
+Uygulamayı indirdikten sonra açtığınızda, Windows Defender karşınıza mavi bir "Windows bilgisayarınızı korudu" ekranı çıkarabilir. 
+
+ uygulama tamamen güvenlidir. 
+ticari bir yazılım şirketi olmadığı ve resmi bir yazılım sertifikam olmadığı için Windows beni "Bilinmeyen Yayımcı" olarak görüyor. (Yine de  uygulamanın güvenilir olduğuna dair onay bildirimini yaptım, mavi ekran hiç çıkmayabilir de).
+
+NASIL AÇACAKSINIZ?
+1. Eğer karşınıza mavi uyarı ekranı çıkarsa, metnin altındaki "Ek bilgi" (veya More info) yazısına tıklayın.
+2. Sağ altta beliren "Yine de çalıştır" (Run anyway) butonuna basın.
+3. Kurulum sorunsuz bir şekilde başlayacaktır.
+
+Kütüphane OS, okuldaki kitap alışverişini, öğrenci takiplerini ve gecikmeleri modern, hızlı ve çevrimdışı bir yapıyla yönetmenizi sağlayan akıllı bir sistemdir. 
+
+1. Hızlı Kitap Ödünç Verme 📚 
+
+Öğrencilere saniyeler içinde kitap vermek için tasarlanmıştır. 
+
+Akıllı Otomatik Doldurma: Öğrenci adı veya Kitap adı yazmaya başladığınızda sistem size veritabanından en yakın tahmini sunar. "Tab" tuşuna basarak veya fareyle tıklayarak kalanını otomatik doldurabilirsiniz. 
+
+Akıllı Süre Hesaplama: Sisteme kitabın sayfa sayısını girdiğinizde, formül (25 Sayfa = 1 Gün) devreye girer ve öğrenciye verilmesi gereken süreyi (Örn: 150 sayfa = 6 gün) otomatik hesaplar. 
+
+İstediğiniz zaman teslim süresini manuel olarak da değiştirebilirsiniz. Sistem bunu hafızasında tutar. 
+
+2. Durum & Gecikme Takibi 🚨 
+
+Hangi kitabın kimde olduğunu ve ne zaman teslim edileceğini anlık gösterir. 
+
+Kırmızı Satırlar (Gecikenler): Teslim tarihi geçmiş kitapları ve kaç gün geciktiğini gösterir. 
+
+Turuncu Satırlar (Yaklaşanlar): Teslimine 2 gün veya daha az kalmış kitapları gösterir. 
+
+İşlemler: Bu ekrandan tek tuşla "+2 Gün" ek süre verebilir veya "Teslim Al" butonuna basarak kitabı iade alabilirsiniz. 
+
+3. Öğrenci & Kitap Geçmişi 🗄️ 
+
+Kim, ne zaman, hangi kitabı almış ve ne zaman iade etmiş? Tüm bu veriler burada tutulur. 
+
+Öğrenci etiketi yanındaki geçmişi gör butonuna basarak öğrencinin detaylı bilgilerine erişebilirsiniz. 
+
+PDF Olarak Kaydet: Dönem sonlarında veya istendiğinde tüm geçmişi resmi bir rapor halinde PDF'e dönüştürür.  
+
+Dikkat: PDF alındıktan sonra "İade Edilenler" geçmişten silinir. (Aktif okunan kitaplar silinmez). 
+
+"PDF Olarak Kaydet"  butonuna basıldıktan sonra açılan penceredeki "Yazdır" butonuna basılmalı. Açılan klasör penceresinde dosyaya ad verip, dilerseniz kaydedilecek konumu seçip kaydetmelisiniz. 
+
+4. Kütüphane & Öğrenciler (Arşiv) 🛡️ 
+
+Programın beynidir. Tüm kayıtlı kitaplar ve öğrenciler burada listelenir. 
+
+Öğrencilerin yanındaki "Üç Nokta (⋮)" menüsüne tıklayarak öğrenci bilgilerini güncelleyebilir veya silebilirsiniz. 
+
+Yedek İndir/Yükle: Tüm verilerinizi (Öğrenciler, Kitaplar, Geçmiş) tek bir .json dosyası olarak bilgisayarınıza indirebilir, başka bir bilgisayara aktarabilirsiniz. 
+
+Kitapları Sıfırla & Yenile: Kırmızı butona basıldığında, kütüphanedeki ana kitap listesini klasik kitap listesiyle sıfırlar. (ÖNERİLMEZ)  
+
+5. AI Kütüphane Asistanı 🤖 
+
+Yapay zeka ile desteklenen bu bölüm, kütüphane asistanınızdır. 
+
+Hazır komutlara tıklayarak (Örn: "Şu an kimlerin kitabı gecikmiş?") veritabanını yapay zekaya analiz ettirebilirsiniz. 
+
+Sadece kütüphane, kitap önerileri ve öğrenci takibi üzerine kısıtlı bir modda, güvenli bir şekilde çalışır.
+
+Emekleriniz ve bana kattıklarınız için sonsuz teşekkürler. Umarım projeyi beğenirsiniz!
+
+Sevgilerimle,
+Yusuf
+Mash Studios`;
+
+            // Tarayıcı içinde TXT dosyasını oluşturur ve indirmeyi tetikler
+            const blob = new Blob([metinIcerigi], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'Kutuphane_OS_Kurulum_Ve_Kullanım_klavuzu.txt';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
         }
     </script>
 </body>
